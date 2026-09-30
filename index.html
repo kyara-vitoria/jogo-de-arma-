@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Operação Zona Zero</title>
+<title>PISTOLADA</title>
 
 <style>
 
@@ -17,115 +17,175 @@
 
 body{
     overflow:hidden;
-    background:#050805;
+    background:#050706;
     color:white;
-    font-family:Arial,sans-serif;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 canvas{
     display:block;
 }
 
-/* =========================
-   HUD
-========================= */
-
-#hud{
-    position:fixed;
-    top:15px;
-    left:15px;
-    right:15px;
-
-    display:flex;
-    justify-content:space-between;
-
-    z-index:5;
-    pointer-events:none;
-}
-
-.box{
-    background:rgba(0,0,0,.7);
-    border:1px solid #506457;
-    border-radius:10px;
-    padding:10px 15px;
-    min-width:140px;
-}
-
-.label{
-    font-size:11px;
-    color:#9ba69f;
-    text-transform:uppercase;
-}
-
-.value{
-    font-size:20px;
-    font-weight:bold;
-    margin-top:3px;
-}
-
-#healthBar{
-    width:130px;
-    height:8px;
-    background:#222;
-    border-radius:10px;
-    margin-top:5px;
-    overflow:hidden;
-}
-
-#healthFill{
-    width:100%;
-    height:100%;
-    background:#4caf50;
-}
-
-/* =========================
+/* =================================================
    TELAS
-========================= */
+================================================= */
 
 .screen{
     position:fixed;
     inset:0;
-
-    background:rgba(3,6,4,.94);
+    z-index:100;
 
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
-    z-index:20;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(57,83,61,.55),
+            rgba(3,5,4,.98) 75%
+        );
 }
 
+/* =================================================
+   TELA INICIAL
+================================================= */
+
+#startScreen{
+    text-align:center;
+}
+
+.startContent{
+    width:min(900px,92%);
+    padding:40px;
+}
+
+.logo{
+    font-size:clamp(60px,12vw,130px);
+    font-weight:1000;
+    letter-spacing:12px;
+
+    color:#e8eee9;
+
+    text-shadow:
+        0 5px 0 #27332a,
+        0 0 25px rgba(130,180,135,.3);
+
+    animation:
+        logoPulse 2s infinite alternate;
+}
+
+.logoLine{
+    width:230px;
+    height:4px;
+
+    background:#6ca774;
+
+    margin:10px auto 25px;
+
+    border-radius:20px;
+}
+
+.startSubtitle{
+    color:#aeb8b0;
+    letter-spacing:3px;
+    margin-bottom:40px;
+}
+
+.startButton{
+
+    min-width:240px;
+
+    padding:17px 45px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#5b9664;
+
+    color:white;
+
+    font-size:20px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 25px rgba(90,150,100,.25);
+
+    transition:.2s;
+}
+
+.startButton:hover{
+    transform:scale(1.07);
+    background:#72ad79;
+}
+
+.startInfo{
+    margin-top:30px;
+
+    font-size:12px;
+
+    color:#7e8981;
+}
+
+@keyframes logoPulse{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.025);
+    }
+
+}
+
+
+/* =================================================
+   PAINEL
+================================================= */
+
 .panel{
-    width:min(950px,94%);
-    max-height:90vh;
+
+    width:min(1000px,94%);
+
+    max-height:92vh;
+
     overflow:auto;
 
-    background:#101612;
+    background:
+        rgba(12,18,14,.97);
 
-    border:1px solid #526459;
+    border:
+        1px solid #4c5e50;
+
     border-radius:20px;
 
     padding:30px;
 
-    box-shadow:0 0 50px rgba(0,0,0,.8);
-
     text-align:center;
+
+    box-shadow:
+        0 0 60px rgba(0,0,0,.8);
+
 }
 
-h1{
-    font-size:42px;
-    letter-spacing:3px;
+.title{
+    font-size:43px;
+    letter-spacing:4px;
     margin-bottom:8px;
 }
 
 .subtitle{
-    color:#9da8a1;
+    color:#aeb8b0;
     margin-bottom:25px;
 }
 
-/* =========================
+
+/* =================================================
    PERSONAGENS
-========================= */
+================================================= */
 
 .characters{
 
@@ -137,300 +197,547 @@ h1{
     gap:15px;
 
     margin:20px 0;
+
 }
 
 .character{
 
     background:#171e19;
 
-    border:2px solid #303b34;
+    border:
+        2px solid #303b34;
 
-    border-radius:15px;
+    border-radius:16px;
 
-    padding:15px;
+    padding:16px;
 
     cursor:pointer;
 
     transition:.2s;
+
 }
 
 .character:hover{
 
-    transform:translateY(-5px);
+    transform:translateY(-6px);
 
-    border-color:#78947c;
+    border-color:#78927c;
 
 }
 
 .character.selected{
 
-    border-color:#7fc486;
+    border-color:#81c887;
 
-    background:#1d2920;
+    background:#1d2a20;
 
     box-shadow:
-    0 0 20px rgba(120,190,130,.25);
+        0 0 25px
+        rgba(110,190,120,.2);
 
 }
 
+
+/* AVATAR */
+
 .avatar{
 
-    width:100px;
-    height:120px;
+    width:95px;
+    height:115px;
 
     margin:auto;
 
     position:relative;
+
 }
 
-/* cabeça */
-
-.avatar .head{
+.head{
 
     position:absolute;
 
-    width:45px;
-    height:45px;
+    width:42px;
+    height:42px;
 
     border-radius:50%;
 
-    left:28px;
-    top:5px;
+    left:27px;
+    top:3px;
 
-    background:#d39b78;
+    background:#d39a76;
+
 }
 
-/* corpo */
-
-.avatar .body{
+.body{
 
     position:absolute;
 
-    width:70px;
-    height:65px;
+    width:68px;
+    height:62px;
 
-    border-radius:15px 15px 8px 8px;
+    left:13px;
+    top:45px;
 
-    left:15px;
-    top:48px;
+    border-radius:
+        14px 14px 7px 7px;
+
 }
 
-/* pernas */
-
-.avatar .legs{
+.legs{
 
     position:absolute;
 
     width:55px;
-    height:25px;
+    height:24px;
 
-    left:22px;
+    left:20px;
     bottom:0;
 
-    background:#202621;
+    background:#252a26;
 
     border-radius:5px;
+
 }
 
-/* personagens */
 
-.soldier .body{
-    background:#57785c;
+/* CORES */
+
+.char1 .body{
+    background:#4d7854;
 }
 
-.scout .body{
-    background:#3d7190;
+.char2 .body{
+    background:#3d7194;
 }
 
-.commander .body{
-    background:#66528a;
+.char3 .body{
+    background:#6d528d;
 }
 
-.specialist .body{
-    background:#a06b43;
+.char4 .body{
+    background:#9a673f;
 }
+
 
 .character h3{
-    margin-top:8px;
+    margin-top:7px;
 }
 
 .character p{
-    font-size:12px;
-    color:#aeb8b1;
-    margin:7px 0;
+
+    color:#aab3ad;
+
+    font-size:13px;
+
+    margin:7px;
+
 }
 
 .stats{
+
     font-size:12px;
-    color:#d3d9d5;
+
+    color:#d0d6d2;
+
     line-height:1.6;
+
 }
 
-/* =========================
-   BOTÕES
-========================= */
+
+/* =================================================
+   BOTÃO
+================================================= */
 
 button{
 
     border:none;
 
-    padding:14px 35px;
-
     border-radius:9px;
 
-    background:#5f9065;
+    padding:14px 35px;
+
+    background:#5d9665;
 
     color:white;
 
-    font-weight:bold;
-
     font-size:17px;
+
+    font-weight:bold;
 
     cursor:pointer;
 
     transition:.2s;
+
 }
 
 button:hover{
 
-    background:#78a87d;
+    background:#74ad7b;
 
     transform:scale(1.04);
 
 }
 
-#selectedName{
 
-    color:#7fbd85;
+/* =================================================
+   HUD
+================================================= */
+
+#hud{
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:10;
+
+}
+
+.topHud{
+
+    position:absolute;
+
+    top:15px;
+    left:15px;
+    right:15px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+}
+
+.hudBox{
+
+    background:
+        rgba(0,0,0,.62);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:10px;
+
+    padding:9px 13px;
+
+    min-width:120px;
+
+}
+
+.small{
+
+    font-size:11px;
+
+    color:#9fa9a2;
+
+}
+
+.big{
+
+    font-size:19px;
+
+    font-weight:bold;
+
+    margin-top:3px;
+
+}
+
+.bar{
+
+    width:140px;
+
+    height:8px;
+
+    margin-top:5px;
+
+    background:#242424;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+}
+
+#hpBar{
+
+    width:100%;
+    height:100%;
+
+    background:#53bd68;
+
+}
+
+#armorBar{
+
+    width:100%;
+    height:100%;
+
+    background:#4b91d1;
+
+}
+
+
+/* =================================================
+   ARMA
+================================================= */
+
+#weaponPanel{
+
+    position:absolute;
+
+    bottom:20px;
+    right:25px;
+
+    background:
+        rgba(0,0,0,.7);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:13px;
+
+    padding:15px 20px;
+
+    text-align:right;
+
+}
+
+#weaponName{
+
+    font-size:18px;
 
     font-weight:bold;
 
 }
 
-/* =========================
+#ammo{
+
+    font-size:32px;
+
+    font-weight:bold;
+
+}
+
+#reloadText{
+
+    color:#ffd369;
+
+    font-size:12px;
+
+}
+
+
+/* =================================================
+   MINIMAPA
+================================================= */
+
+#minimap{
+
+    position:absolute;
+
+    right:20px;
+    top:95px;
+
+    width:150px;
+    height:150px;
+
+    background:#18251b;
+
+    border:
+        3px solid
+        rgba(255,255,255,.4);
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+}
+
+
+/* =================================================
+   ZONA
+================================================= */
+
+#zoneWarning{
+
+    position:absolute;
+
+    top:90px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    padding:9px 16px;
+
+    background:
+        rgba(0,0,0,.65);
+
+    border-radius:20px;
+
+    color:#ffd36a;
+
+    font-weight:bold;
+
+    opacity:0;
+
+    transition:.3s;
+
+}
+
+
+/* =================================================
    MIRA
-========================= */
+================================================= */
 
 #crosshair{
 
     position:fixed;
 
-    width:25px;
-    height:25px;
+    width:28px;
+    height:28px;
+
+    transform:
+        translate(-50%,-50%);
 
     pointer-events:none;
 
-    transform:translate(-50%,-50%);
+    z-index:20;
 
-    z-index:10;
 }
 
-#crosshair:before,
-#crosshair:after{
+#crosshair::before,
+#crosshair::after{
 
     content:"";
 
     position:absolute;
 
     background:white;
+
 }
 
-#crosshair:before{
+#crosshair::before{
 
-    width:25px;
+    width:28px;
     height:2px;
 
-    left:0;
-    top:11px;
+    top:13px;
+
 }
 
-#crosshair:after{
+#crosshair::after{
 
     width:2px;
-    height:25px;
+    height:28px;
 
-    left:11px;
-    top:0;
+    left:13px;
+
 }
 
-/* =========================
-   MOBILE
-========================= */
+
+/* =================================================
+   GAME OVER
+================================================= */
+
+#gameOver{
+
+    display:none;
+
+}
+
+
+/* =================================================
+   RESPONSIVO
+================================================= */
 
 @media(max-width:700px){
 
     .characters{
+
         grid-template-columns:
         repeat(2,1fr);
+
     }
 
-    h1{
-        font-size:28px;
+    .title{
+
+        font-size:30px;
+
     }
 
-    .panel{
-        padding:20px;
+    .logo{
+
+        letter-spacing:6px;
+
     }
+
+    .hudBox{
+
+        min-width:90px;
+
+        padding:7px;
+
+    }
+
+    .bar{
+
+        width:90px;
+
+    }
+
+    #minimap{
+
+        width:110px;
+        height:110px;
+
+        top:85px;
+        right:10px;
+
+    }
+
 }
 
 </style>
 </head>
 
+
 <body>
 
-<canvas id="game"></canvas>
 
-<!-- =========================
-     HUD
-========================= -->
+<!-- =================================================
+     TELA DE ENTRADA
+================================================= -->
 
-<div id="hud">
+<div class="screen"
+     id="startScreen">
 
-    <div class="box">
+    <div class="startContent">
 
-        <div class="label">
-            Vida
+        <div class="logo">
+            PISTOLADA
         </div>
 
-        <div class="value"
-             id="healthText">
-            100
+        <div class="logoLine"></div>
+
+        <div class="startSubtitle">
+            ENTRE NA BATALHA • SOBREVIVA • VENÇA
         </div>
 
-        <div id="healthBar">
-            <div id="healthFill"></div>
-        </div>
+        <button
+            class="startButton"
+            onclick="openCharacters()">
 
-    </div>
+            ENTRAR
 
+        </button>
 
-    <div class="box">
+        <div class="startInfo">
 
-        <div class="label">
-            Pontuação
-        </div>
-
-        <div class="value"
-             id="score">
-            0
-        </div>
-
-    </div>
-
-
-    <div class="box">
-
-        <div class="label">
-            Munição
-        </div>
-
-        <div class="value">
-
-            <span id="ammo">
-                12
-            </span>
-
-            / 12
+            Um novo campo de batalha espera por você.
 
         </div>
 
@@ -439,38 +746,35 @@ button:hover{
 </div>
 
 
-<!-- MIRA -->
 
-<div id="crosshair"></div>
-
-
-<!-- =========================
-     MENU
-========================= -->
+<!-- =================================================
+     SELEÇÃO DE PERSONAGEM
+================================================= -->
 
 <div class="screen"
-     id="menu">
+     id="characterScreen"
+     style="display:none;">
 
     <div class="panel">
 
-        <h1>
-            OPERAÇÃO ZONA ZERO
-        </h1>
+        <div class="title">
+            ESCOLHA SEU PERSONAGEM
+        </div>
 
-        <p class="subtitle">
-            Escolha seu personagem
-        </p>
+        <div class="subtitle">
+            Selecione seu combatente antes de entrar na partida.
+        </div>
 
 
         <div class="characters">
 
 
-            <!-- SOLDADO -->
+            <!-- RANGER -->
 
             <div class="character selected"
-                 onclick="selectCharacter('soldier',this)">
+                 onclick="selectCharacter(0,this)">
 
-                <div class="avatar soldier">
+                <div class="avatar char1">
 
                     <div class="head"></div>
                     <div class="body"></div>
@@ -479,7 +783,7 @@ button:hover{
                 </div>
 
                 <h3>
-                    SOLDADO
+                    RANGER
                 </h3>
 
                 <p>
@@ -487,20 +791,22 @@ button:hover{
                 </p>
 
                 <div class="stats">
-                    ❤️ Vida: 100<br>
-                    ⚡ Velocidade: 4.5<br>
-                    🎯 Precisão: 90%
+
+                    ❤️ 100 Vida<br>
+                    🛡️ 50 Colete<br>
+                    ⚡ Velocidade normal
+
                 </div>
 
             </div>
 
 
-            <!-- BATEDOR -->
+            <!-- FALCÃO -->
 
             <div class="character"
-                 onclick="selectCharacter('scout',this)">
+                 onclick="selectCharacter(1,this)">
 
-                <div class="avatar scout">
+                <div class="avatar char2">
 
                     <div class="head"></div>
                     <div class="body"></div>
@@ -509,28 +815,30 @@ button:hover{
                 </div>
 
                 <h3>
-                    BATEDOR
+                    FALCÃO
                 </h3>
 
                 <p>
-                    Rápido
+                    Velocidade
                 </p>
 
                 <div class="stats">
-                    ❤️ Vida: 85<br>
-                    ⚡ Velocidade: 6<br>
-                    🎯 Precisão: 85%
+
+                    ❤️ 90 Vida<br>
+                    🛡️ 40 Colete<br>
+                    ⚡ Muito rápido
+
                 </div>
 
             </div>
 
 
-            <!-- COMANDANTE -->
+            <!-- TITÃ -->
 
             <div class="character"
-                 onclick="selectCharacter('commander',this)">
+                 onclick="selectCharacter(2,this)">
 
-                <div class="avatar commander">
+                <div class="avatar char3">
 
                     <div class="head"></div>
                     <div class="body"></div>
@@ -539,28 +847,30 @@ button:hover{
                 </div>
 
                 <h3>
-                    COMANDANTE
+                    TITÃ
                 </h3>
 
                 <p>
-                    Resistente
+                    Resistência
                 </p>
 
                 <div class="stats">
-                    ❤️ Vida: 140<br>
-                    ⚡ Velocidade: 3.5<br>
-                    🎯 Precisão: 90%
+
+                    ❤️ 130 Vida<br>
+                    🛡️ 70 Colete<br>
+                    ⚡ Mais lento
+
                 </div>
 
             </div>
 
 
-            <!-- ESPECIALISTA -->
+            <!-- PRECISÃO -->
 
             <div class="character"
-                 onclick="selectCharacter('specialist',this)">
+                 onclick="selectCharacter(3,this)">
 
-                <div class="avatar specialist">
+                <div class="avatar char4">
 
                     <div class="head"></div>
                     <div class="body"></div>
@@ -569,7 +879,7 @@ button:hover{
                 </div>
 
                 <h3>
-                    ESPECIALISTA
+                    PRECISÃO
                 </h3>
 
                 <p>
@@ -577,9 +887,11 @@ button:hover{
                 </p>
 
                 <div class="stats">
-                    ❤️ Vida: 95<br>
-                    ⚡ Velocidade: 4<br>
-                    🎯 Precisão: 100%
+
+                    ❤️ 95 Vida<br>
+                    🛡️ 45 Colete<br>
+                    🎯 Alta precisão
+
                 </div>
 
             </div>
@@ -588,16 +900,21 @@ button:hover{
 
 
         <p>
+
             Personagem selecionado:
-            <span id="selectedName">
-                SOLDADO
-            </span>
+
+            <b id="selectedName">
+                RANGER
+            </b>
+
         </p>
 
         <br>
 
         <button onclick="startGame()">
-            JOGAR
+
+            COMEÇAR PARTIDA
+
         </button>
 
     </div>
@@ -605,39 +922,169 @@ button:hover{
 </div>
 
 
-<!-- =========================
+
+<!-- =================================================
+     HUD
+================================================= -->
+
+<div id="hud">
+
+    <div class="topHud">
+
+
+        <div>
+
+            <div class="hudBox">
+
+                <div class="small">
+                    VIDA
+                </div>
+
+                <div class="big">
+
+                    <span id="healthText">
+                        100
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div id="hpBar"></div>
+
+                </div>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="hudBox">
+
+                <div class="small">
+                    COLETE
+                </div>
+
+                <div class="big">
+
+                    <span id="armorText">
+                        50
+                    </span>
+
+                </div>
+
+                <div class="bar">
+
+                    <div id="armorBar"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="hudBox">
+
+                <div class="small">
+                    SOBREVIVENTES
+                </div>
+
+                <div class="big">
+
+                    <span id="playersLeft">
+                        15
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="minimap"></div>
+
+
+    <div id="zoneWarning">
+
+        ⚠ ZONA SEGURA DIMINUINDO
+
+    </div>
+
+
+    <div id="weaponPanel">
+
+        <div id="weaponName">
+            PISTOLA
+        </div>
+
+        <div>
+
+            <span id="ammo">
+                12
+            </span>
+
+            /
+
+            <span id="reserve">
+                60
+            </span>
+
+        </div>
+
+        <div id="reloadText">
+
+            R — RECARREGAR
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="crosshair"></div>
+
+
+
+<!-- =================================================
      GAME OVER
-========================= -->
+================================================= -->
 
 <div class="screen"
-     id="gameOver"
-     style="display:none">
+     id="gameOver">
 
     <div class="panel">
 
-        <h1>
-            MISSÃO ENCERRADA
-        </h1>
+        <div class="title">
+            FIM DE PARTIDA
+        </div>
 
-        <p class="subtitle">
-            Sua missão terminou.
-        </p>
+        <div class="subtitle">
+            Você foi eliminado.
+        </div>
 
         <h2>
+
             Pontuação:
             <span id="finalScore">
                 0
             </span>
+
         </h2>
 
         <br>
 
         <button onclick="backToMenu()">
-            ESCOLHER PERSONAGEM
-        </button>
 
-        <button onclick="startGame()">
-            JOGAR NOVAMENTE
+            VOLTAR AO MENU
+
         </button>
 
     </div>
@@ -645,11 +1092,12 @@ button:hover{
 </div>
 
 
+
 <script>
 
-/* =========================
+/* =================================================
    CANVAS
-========================= */
+================================================= */
 
 const canvas =
 document.getElementById("game");
@@ -657,15 +1105,17 @@ document.getElementById("game");
 const ctx =
 canvas.getContext("2d");
 
-let W,H;
+let screenW;
+let screenH;
+
 
 function resize(){
 
-    W =
+    screenW =
     canvas.width =
     window.innerWidth;
 
-    H =
+    screenH =
     canvas.height =
     window.innerHeight;
 
@@ -679,117 +1129,135 @@ window.addEventListener(
 );
 
 
-/* =========================
+/* =================================================
+   TELA DE PERSONAGENS
+================================================= */
+
+function openCharacters(){
+
+    document.getElementById(
+        "startScreen"
+    ).style.display="none";
+
+    document.getElementById(
+        "characterScreen"
+    ).style.display="flex";
+
+}
+
+
+/* =================================================
    PERSONAGENS
-========================= */
+================================================= */
 
-const characters = {
+const characterData=[
 
-    soldier:{
-        name:"SOLDADO",
-        color:"#57785c",
+    {
+        name:"RANGER",
         health:100,
+        armor:50,
         speed:4.5,
-        precision:0.90
+        color:"#4d7854"
     },
 
-    scout:{
-        name:"BATEDOR",
-        color:"#3d7190",
-        health:85,
+    {
+        name:"FALCÃO",
+        health:90,
+        armor:40,
         speed:6,
-        precision:0.85
+        color:"#3d7194"
     },
 
-    commander:{
-        name:"COMANDANTE",
-        color:"#66528a",
-        health:140,
+    {
+        name:"TITÃ",
+        health:130,
+        armor:70,
         speed:3.5,
-        precision:0.90
+        color:"#6d528d"
     },
 
-    specialist:{
-        name:"ESPECIALISTA",
-        color:"#a06b43",
+    {
+        name:"PRECISÃO",
         health:95,
+        armor:45,
         speed:4,
-        precision:1
+        color:"#9a673f"
     }
 
-};
-
-let selectedCharacter =
-"soldier";
+];
 
 
-/* =========================
-   SELEÇÃO
-========================= */
+let selectedCharacter=0;
 
-function selectCharacter(type,element){
 
-    selectedCharacter =
-    type;
+function selectCharacter(
+    index,
+    element
+){
+
+    selectedCharacter=index;
+
 
     document
     .querySelectorAll(".character")
-    .forEach(card=>{
-        card.classList.remove(
-            "selected"
-        );
-    });
+    .forEach(
+        card=>{
+            card.classList.remove(
+                "selected"
+            );
+        }
+    );
+
 
     element.classList.add(
         "selected"
     );
 
+
     document.getElementById(
         "selectedName"
-    ).textContent =
-    characters[type].name;
+    ).textContent=
+    characterData[index].name;
 
 }
 
 
-/* =========================
-   JOGO
-========================= */
+/* =================================================
+   MAPA
+================================================= */
 
-let playing=false;
+const MAP_WIDTH=3000;
+const MAP_HEIGHT=3000;
 
-let player;
 
-let enemies=[];
-let bullets=[];
-let particles=[];
-
-let score=0;
-let health=100;
-
-let ammo=12;
-
-let keys={};
-
-let mouse={
-    x:W/2,
-    y:H/2
+let camera={
+    x:0,
+    y:0
 };
 
 
-/* =========================
+/* =================================================
    PLAYER
-========================= */
+================================================= */
+
+let player;
+
 
 function createPlayer(){
 
-    const data =
-    characters[selectedCharacter];
+    const data=
+    characterData[
+        selectedCharacter
+    ];
+
 
     return{
 
-        x:W/2,
-        y:H/2,
+        x:
+        MAP_WIDTH/2,
+
+        y:
+        MAP_HEIGHT/2,
 
         radius:18,
 
@@ -797,167 +1265,445 @@ function createPlayer(){
 
         color:data.color,
 
-        angle:0
+        health:data.health,
+
+        maxHealth:data.health,
+
+        armor:data.armor,
+
+        maxArmor:data.armor
 
     };
 
 }
 
 
-/* =========================
-   INICIAR
-========================= */
+/* =================================================
+   ARMAS
+================================================= */
+
+const weapons={
+
+    pistol:{
+        name:"PISTOLA",
+        damage:25,
+        fireRate:300,
+        magazine:12,
+        ammo:12,
+        reserve:60,
+        bulletSpeed:13
+    },
+
+    smg:{
+        name:"SMG",
+        damage:15,
+        fireRate:110,
+        magazine:30,
+        ammo:30,
+        reserve:90,
+        bulletSpeed:14
+    },
+
+    rifle:{
+        name:"RIFLE",
+        damage:35,
+        fireRate:450,
+        magazine:20,
+        ammo:20,
+        reserve:60,
+        bulletSpeed:16
+    }
+
+};
+
+
+let weapon;
+
+let lastShot=0;
+
+
+/* =================================================
+   CONTROLES
+================================================= */
+
+let keys={};
+
+let mouse={
+    x:screenW/2,
+    y:screenH/2
+};
+
+
+document.addEventListener(
+    "keydown",
+    e=>{
+
+        keys[
+            e.key.toLowerCase()
+        ]=true;
+
+
+        if(
+            e.key.toLowerCase()==="r"
+        ){
+
+            reload();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    e=>{
+
+        keys[
+            e.key.toLowerCase()
+        ]=false;
+
+    }
+);
+
+
+document.addEventListener(
+    "mousemove",
+    e=>{
+
+        mouse.x=e.clientX;
+        mouse.y=e.clientY;
+
+
+        const crosshair=
+        document.getElementById(
+            "crosshair"
+        );
+
+
+        crosshair.style.left=
+        mouse.x+"px";
+
+        crosshair.style.top=
+        mouse.y+"px";
+
+    }
+);
+
+
+document.addEventListener(
+    "mousedown",
+    e=>{
+
+        if(
+            e.button===0
+        ){
+
+            shoot();
+
+        }
+
+    }
+);
+
+
+/* =================================================
+   OBJETOS
+================================================= */
+
+let enemies=[];
+let loot=[];
+let bullets=[];
+let particles=[];
+
+let trees=[];
+let buildings=[];
+
+let playing=false;
+
+
+/* =================================================
+   INICIAR PARTIDA
+================================================= */
 
 function startGame(){
 
     document.getElementById(
-        "menu"
+        "characterScreen"
     ).style.display="none";
+
 
     document.getElementById(
         "gameOver"
     ).style.display="none";
 
 
-    player =
+    player=
     createPlayer();
 
 
-    health =
-    characters[
-        selectedCharacter
-    ].health;
+    weapon=
+    {...weapons.pistol};
 
-
-    score=0;
-
-    ammo=12;
 
     enemies=[];
-
+    loot=[];
     bullets=[];
-
     particles=[];
+    trees=[];
+    buildings=[];
+
+
+    createWorld();
+
 
     playing=true;
+
 
     updateHUD();
 
 }
 
 
-/* =========================
-   TECLADO
-========================= */
+/* =================================================
+   CRIAR MUNDO
+================================================= */
 
-document.addEventListener(
-"keydown",
-e=>{
+function createWorld(){
 
-    keys[
-        e.key.toLowerCase()
-    ]=true;
-
-
-    if(
-        e.key.toLowerCase()
-        ==="r"
+    for(
+        let i=0;
+        i<150;
+        i++
     ){
 
-        ammo=12;
+        trees.push({
 
-        updateHUD();
+            x:
+            Math.random()*
+            MAP_WIDTH,
 
-    }
+            y:
+            Math.random()*
+            MAP_HEIGHT,
 
-});
+            size:
+            18+
+            Math.random()*20
 
-
-document.addEventListener(
-"keyup",
-e=>{
-
-    keys[
-        e.key.toLowerCase()
-    ]=false;
-
-});
-
-
-/* =========================
-   MOUSE
-========================= */
-
-document.addEventListener(
-"mousemove",
-e=>{
-
-    mouse.x=e.clientX;
-    mouse.y=e.clientY;
-
-    const crosshair =
-    document.getElementById(
-        "crosshair"
-    );
-
-    crosshair.style.left =
-    mouse.x+"px";
-
-    crosshair.style.top =
-    mouse.y+"px";
-
-});
-
-
-document.addEventListener(
-"mousedown",
-e=>{
-
-    if(e.button===0){
-
-        shoot();
+        });
 
     }
 
-});
+
+    for(
+        let i=0;
+        i<20;
+        i++
+    ){
+
+        buildings.push({
+
+            x:
+            150+
+            Math.random()*
+            (MAP_WIDTH-300),
+
+            y:
+            150+
+            Math.random()*
+            (MAP_HEIGHT-300),
+
+            w:
+            100+
+            Math.random()*160,
+
+            h:
+            80+
+            Math.random()*130
+
+        });
+
+    }
 
 
-/* =========================
+    for(
+        let i=0;
+        i<14;
+        i++
+    ){
+
+        createEnemy();
+
+    }
+
+
+    for(
+        let i=0;
+        i<30;
+        i++
+    ){
+
+        createLoot();
+
+    }
+
+}
+
+
+/* =================================================
+   INIMIGOS
+================================================= */
+
+function createEnemy(){
+
+    enemies.push({
+
+        x:
+        Math.random()*
+        MAP_WIDTH,
+
+        y:
+        Math.random()*
+        MAP_HEIGHT,
+
+        radius:17,
+
+        health:100,
+
+        speed:
+        1.2+
+        Math.random()*1.2
+
+    });
+
+}
+
+
+/* =================================================
+   LOOT
+================================================= */
+
+function createLoot(){
+
+    const types=[
+        "ammo",
+        "armor",
+        "medkit",
+        "smg",
+        "rifle"
+    ];
+
+
+    loot.push({
+
+        x:
+        Math.random()*
+        MAP_WIDTH,
+
+        y:
+        Math.random()*
+        MAP_HEIGHT,
+
+        type:
+        types[
+            Math.floor(
+                Math.random()*
+                types.length
+            )
+        ]
+
+    });
+
+}
+
+
+/* =================================================
    ATIRAR
-========================= */
+================================================= */
 
 function shoot(){
 
     if(!playing)return;
 
-    if(ammo<=0)return;
 
-    ammo--;
+    const now=
+    Date.now();
 
 
-    let angle =
-    Math.atan2(
-        mouse.y-player.y,
-        mouse.x-player.x
-    );
+    if(
+        now-lastShot<
+        weapon.fireRate
+    ){
+
+        return;
+
+    }
+
+
+    if(
+        weapon.ammo<=0
+    ){
+
+        reload();
+
+        return;
+
+    }
+
+
+    lastShot=now;
+
+
+    weapon.ammo--;
+
+
+    const worldX=
+        mouse.x-
+        screenW/2+
+        camera.x;
+
+
+    const worldY=
+        mouse.y-
+        screenH/2+
+        camera.y;
+
+
+    const angle=
+        Math.atan2(
+            worldY-player.y,
+            worldX-player.x
+        );
 
 
     bullets.push({
 
         x:player.x,
+
         y:player.y,
 
         vx:
-        Math.cos(angle)*11,
+        Math.cos(angle)*
+        weapon.bulletSpeed,
 
         vy:
-        Math.sin(angle)*11,
+        Math.sin(angle)*
+        weapon.bulletSpeed,
 
-        radius:4,
+        damage:
+        weapon.damage,
 
-        life:70
+        life:100
 
     });
+
+
+    createParticles(
+        player.x,
+        player.y,
+        3
+    );
 
 
     updateHUD();
@@ -965,187 +1711,266 @@ function shoot(){
 }
 
 
-/* =========================
-   INIMIGO
-========================= */
+/* =================================================
+   RECARREGAR
+================================================= */
 
-function spawnEnemy(){
+function reload(){
 
-    let side =
-    Math.floor(
-        Math.random()*4
-    );
+    if(
+        weapon.ammo>=
+        weapon.magazine
+    ){
 
-
-    let x,y;
-
-
-    if(side===0){
-
-        x=-30;
-        y=Math.random()*H;
-
-    }
-
-    if(side===1){
-
-        x=W+30;
-        y=Math.random()*H;
-
-    }
-
-    if(side===2){
-
-        x=Math.random()*W;
-        y=-30;
-
-    }
-
-    if(side===3){
-
-        x=Math.random()*W;
-        y=H+30;
+        return;
 
     }
 
 
-    enemies.push({
+    const needed=
+        weapon.magazine-
+        weapon.ammo;
 
-        x:x,
-        y:y,
 
-        radius:20,
+    const amount=
+        Math.min(
+            needed,
+            weapon.reserve
+        );
 
-        speed:
-        1+
-        Math.random()*1.5,
 
-        pulse:0
+    weapon.ammo+=
+    amount;
 
-    });
+
+    weapon.reserve-=
+    amount;
+
+
+    updateHUD();
 
 }
 
 
-/* =========================
+/* =================================================
+   ZONA
+================================================= */
+
+let zone={
+
+    x:MAP_WIDTH/2,
+
+    y:MAP_HEIGHT/2,
+
+    radius:1250
+
+};
+
+
+function updateZone(){
+
+    if(
+        zone.radius>350
+    ){
+
+        zone.radius-=.025;
+
+    }
+
+
+    const distance=
+        Math.hypot(
+            player.x-zone.x,
+            player.y-zone.y
+        );
+
+
+    if(
+        distance>
+        zone.radius
+    ){
+
+        player.health-=.08;
+
+
+        document.getElementById(
+            "zoneWarning"
+        ).style.opacity="1";
+
+    }else{
+
+        document.getElementById(
+            "zoneWarning"
+        ).style.opacity="0";
+
+    }
+
+}
+
+
+/* =================================================
    UPDATE
-========================= */
+================================================= */
 
 function update(){
 
     if(!playing)return;
 
 
-    /* MOVIMENTO */
+    let speed=
+        player.speed;
+
+
+    if(
+        keys["shift"]
+    ){
+
+        speed*=1.4;
+
+    }
+
 
     if(keys["w"])
-        player.y-=player.speed;
+        player.y-=speed;
 
     if(keys["s"])
-        player.y+=player.speed;
+        player.y+=speed;
 
     if(keys["a"])
-        player.x-=player.speed;
+        player.x-=speed;
 
     if(keys["d"])
-        player.x+=player.speed;
+        player.x+=speed;
 
 
     player.x=
-    Math.max(
-        20,
-        Math.min(
-            W-20,
-            player.x
-        )
-    );
+        Math.max(
+            20,
+            Math.min(
+                MAP_WIDTH-20,
+                player.x
+            )
+        );
+
 
     player.y=
-    Math.max(
-        20,
-        Math.min(
-            H-20,
-            player.y
-        )
-    );
+        Math.max(
+            20,
+            Math.min(
+                MAP_HEIGHT-20,
+                player.y
+            )
+        );
+
+
+    camera.x=
+        player.x-
+        screenW/2;
+
+
+    camera.y=
+        player.y-
+        screenH/2;
+
+
+    camera.x=
+        Math.max(
+            0,
+            Math.min(
+                MAP_WIDTH-screenW,
+                camera.x
+            )
+        );
+
+
+    camera.y=
+        Math.max(
+            0,
+            Math.min(
+                MAP_HEIGHT-screenH,
+                camera.y
+            )
+        );
 
 
     /* BALAS */
 
     bullets.forEach(
-    bullet=>{
+        b=>{
 
-        bullet.x+=
-        bullet.vx;
+            b.x+=b.vx;
+            b.y+=b.vy;
 
-        bullet.y+=
-        bullet.vy;
+            b.life--;
 
-        bullet.life--;
-
-    });
+        }
+    );
 
 
     bullets=
-    bullets.filter(
-        b=>b.life>0
-    );
+        bullets.filter(
+            b=>b.life>0
+        );
 
 
     /* INIMIGOS */
 
     enemies.forEach(
-    enemy=>{
+        enemy=>{
 
-        let angle=
-        Math.atan2(
-            player.y-enemy.y,
-            player.x-enemy.x
-        );
-
-
-        enemy.x+=
-        Math.cos(angle)*
-        enemy.speed;
-
-        enemy.y+=
-        Math.sin(angle)*
-        enemy.speed;
+            const distance=
+                Math.hypot(
+                    player.x-enemy.x,
+                    player.y-enemy.y
+                );
 
 
-        enemy.pulse+=.1;
+            if(
+                distance<650
+            ){
+
+                const angle=
+                    Math.atan2(
+                        player.y-enemy.y,
+                        player.x-enemy.x
+                    );
 
 
-        let distance=
-        Math.hypot(
-            player.x-enemy.x,
-            player.y-enemy.y
-        );
+                enemy.x+=
+                    Math.cos(angle)*
+                    enemy.speed;
 
 
-        if(
-            distance<
-            player.radius+
-            enemy.radius
-        ){
+                enemy.y+=
+                    Math.sin(angle)*
+                    enemy.speed;
 
-            health-=.5;
-
-            updateHUD();
+            }
 
 
-            if(health<=0){
+            if(
+                distance<40
+            ){
 
-                endGame();
+                if(
+                    player.armor>0
+                ){
+
+                    player.armor-=.25;
+
+                }else{
+
+                    player.health-=.35;
+
+                }
 
             }
 
         }
+    );
 
-    });
 
-
-    /* COLISÃO */
+    /* COLISÕES */
 
     for(
         let b=bullets.length-1;
@@ -1159,36 +1984,42 @@ function update(){
             e--
         ){
 
-            let distance=
-            Math.hypot(
-                bullets[b].x-
-                enemies[e].x,
-
-                bullets[b].y-
-                enemies[e].y
-            );
-
-
-            if(
-                distance<
-                bullets[b].radius+
-                enemies[e].radius
-            ){
-
-                createParticles(
+            const distance=
+                Math.hypot(
+                    bullets[b].x-
                     enemies[e].x,
-                    enemies[e].y,
-                    10
+
+                    bullets[b].y-
+                    enemies[e].y
                 );
 
 
-                enemies.splice(e,1);
+            if(
+                distance<25
+            ){
+
+                enemies[e].health-=
+                    bullets[b].damage;
+
 
                 bullets.splice(b,1);
 
-                score+=100;
 
-                updateHUD();
+                if(
+                    enemies[e].health<=0
+                ){
+
+                    createParticles(
+                        enemies[e].x,
+                        enemies[e].y,
+                        10
+                    );
+
+
+                    enemies.splice(e,1);
+
+                }
+
 
                 break;
 
@@ -1199,29 +2030,148 @@ function update(){
     }
 
 
-    /* PARTÍCULAS */
+    /* LOOT */
 
-    particles.forEach(p=>{
+    for(
+        let i=loot.length-1;
+        i>=0;
+        i--
+    ){
 
-        p.x+=p.vx;
-        p.y+=p.vy;
+        const item=
+            loot[i];
 
-        p.life--;
 
-    });
+        const distance=
+            Math.hypot(
+                player.x-item.x,
+                player.y-item.y
+            );
+
+
+        if(
+            distance<35
+        ){
+
+            collectLoot(item);
+
+            loot.splice(i,1);
+
+        }
+
+    }
+
+
+    particles.forEach(
+        p=>{
+
+            p.x+=p.vx;
+            p.y+=p.vy;
+
+            p.life--;
+
+        }
+    );
 
 
     particles=
-    particles.filter(
-        p=>p.life>0
-    );
+        particles.filter(
+            p=>p.life>0
+        );
+
+
+    updateZone();
+
+
+    if(
+        player.health<=0
+    ){
+
+        endGame();
+
+    }
+
+
+    if(
+        enemies.length===0
+    ){
+
+        winGame();
+
+    }
+
+
+    updateHUD();
 
 }
 
 
-/* =========================
+/* =================================================
+   LOOT
+================================================= */
+
+function collectLoot(item){
+
+    if(
+        item.type==="ammo"
+    ){
+
+        weapon.reserve+=30;
+
+    }
+
+
+    if(
+        item.type==="armor"
+    ){
+
+        player.armor=
+            Math.min(
+                player.maxArmor,
+                player.armor+25
+            );
+
+    }
+
+
+    if(
+        item.type==="medkit"
+    ){
+
+        player.health=
+            Math.min(
+                player.maxHealth,
+                player.health+35
+            );
+
+    }
+
+
+    if(
+        item.type==="smg"
+    ){
+
+        weapon=
+            {...weapons.smg};
+
+    }
+
+
+    if(
+        item.type==="rifle"
+    ){
+
+        weapon=
+            {...weapons.rifle};
+
+    }
+
+}
+
+
+/* =================================================
    PARTÍCULAS
-========================= */
+================================================= */
 
 function createParticles(
     x,
@@ -1241,10 +2191,10 @@ function createParticles(
             y:y,
 
             vx:
-            (Math.random()-.5)*5,
+                (Math.random()-.5)*5,
 
             vy:
-            (Math.random()-.5)*5,
+                (Math.random()-.5)*5,
 
             life:25
 
@@ -1255,49 +2205,59 @@ function createParticles(
 }
 
 
-/* =========================
-   DESENHAR
-========================= */
+/* =================================================
+   DESENHO
+================================================= */
 
 function draw(){
 
     ctx.clearRect(
         0,
         0,
-        W,
-        H
+        screenW,
+        screenH
     );
 
 
-    /* FUNDO */
-
-    ctx.fillStyle="#08100a";
+    ctx.fillStyle="#243526";
 
     ctx.fillRect(
         0,
         0,
-        W,
-        H
+        screenW,
+        screenH
     );
 
 
-    /* GRADE */
+    ctx.save();
+
+
+    ctx.translate(
+        -camera.x,
+        -camera.y
+    );
+
+
+    /* GRID */
 
     ctx.strokeStyle=
-    "rgba(255,255,255,.035)";
+        "rgba(255,255,255,.035)";
 
 
     for(
         let x=0;
-        x<W;
-        x+=50
+        x<MAP_WIDTH;
+        x+=100
     ){
 
         ctx.beginPath();
 
         ctx.moveTo(x,0);
 
-        ctx.lineTo(x,H);
+        ctx.lineTo(
+            x,
+            MAP_HEIGHT
+        );
 
         ctx.stroke();
 
@@ -1306,128 +2266,227 @@ function draw(){
 
     for(
         let y=0;
-        y<H;
-        y+=50
+        y<MAP_HEIGHT;
+        y+=100
     ){
 
         ctx.beginPath();
 
         ctx.moveTo(0,y);
 
-        ctx.lineTo(W,y);
+        ctx.lineTo(
+            MAP_WIDTH,
+            y
+        );
 
         ctx.stroke();
 
     }
 
 
-    if(!player)return;
+    /* PRÉDIOS */
+
+    buildings.forEach(
+        b=>{
+
+            ctx.fillStyle="#555c55";
+
+            ctx.fillRect(
+                b.x,
+                b.y,
+                b.w,
+                b.h
+            );
 
 
-    /* PLAYER */
+            ctx.strokeStyle="#858d84";
 
-    let angle=
-    Math.atan2(
-        mouse.y-player.y,
-        mouse.x-player.x
+            ctx.strokeRect(
+                b.x,
+                b.y,
+                b.w,
+                b.h
+            );
+
+        }
     );
 
 
-    ctx.save();
+    /* ÁRVORES */
 
-    ctx.translate(
-        player.x,
-        player.y
+    trees.forEach(
+        tree=>{
+
+            ctx.fillStyle="#243e27";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                tree.x,
+                tree.y,
+                tree.size,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
     );
 
-    ctx.rotate(angle);
+
+    /* LOOT */
+
+    loot.forEach(
+        item=>{
+
+            if(
+                item.type==="ammo"
+            )
+                ctx.fillStyle="#e5bd50";
+
+            else if(
+                item.type==="armor"
+            )
+                ctx.fillStyle="#4d91d0";
+
+            else if(
+                item.type==="medkit"
+            )
+                ctx.fillStyle="#57b86b";
+
+            else if(
+                item.type==="smg"
+            )
+                ctx.fillStyle="#b87542";
+
+            else
+                ctx.fillStyle="#8069a8";
 
 
-    /* arma */
+            ctx.fillRect(
+                item.x-9,
+                item.y-9,
+                18,
+                18
+            );
 
-    ctx.fillStyle="#c8ccc9";
-
-    ctx.fillRect(
-        5,
-        -4,
-        32,
-        8
+        }
     );
 
 
-    /* corpo */
+    /* ZONA */
 
-    ctx.fillStyle=
-    player.color;
+    ctx.strokeStyle=
+        "rgba(110,190,255,.9)";
+
+    ctx.lineWidth=7;
 
     ctx.beginPath();
 
     ctx.arc(
-        0,
-        0,
-        player.radius,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    /* centro */
-
-    ctx.fillStyle="#172019";
-
-    ctx.beginPath();
-
-    ctx.arc(
-        0,
-        0,
-        8,
+        zone.x,
+        zone.y,
+        zone.radius,
         0,
         Math.PI*2
     );
 
-    ctx.fill();
-
-
-    ctx.restore();
-
-
-    /* BALAS */
-
-    bullets.forEach(
-    bullet=>{
-
-        ctx.fillStyle="#ffe08a";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            bullet.x,
-            bullet.y,
-            bullet.radius,
-            0,
-            Math.PI*2
-        );
-
-        ctx.fill();
-
-    });
+    ctx.stroke();
 
 
     /* INIMIGOS */
 
     enemies.forEach(
-    enemy=>{
+        enemy=>{
 
-        ctx.fillStyle="#c94d4d";
+            ctx.fillStyle="#b94e4e";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                enemy.x,
+                enemy.y,
+                enemy.radius,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    /* BALAS */
+
+    bullets.forEach(
+        b=>{
+
+            ctx.fillStyle="#ffe08a";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                b.x,
+                b.y,
+                4,
+                0,
+                Math.PI*2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    /* JOGADOR */
+
+    if(player){
+
+        const angle=
+            Math.atan2(
+                mouse.y-screenH/2,
+                mouse.x-screenW/2
+            );
+
+
+        ctx.save();
+
+
+        ctx.translate(
+            player.x,
+            player.y
+        );
+
+
+        ctx.rotate(angle);
+
+
+        /* ARMA */
+
+        ctx.fillStyle="#d1d4d1";
+
+        ctx.fillRect(
+            5,
+            -4,
+            34,
+            8
+        );
+
+
+        /* CORPO */
+
+        ctx.fillStyle=
+            player.color;
 
         ctx.beginPath();
 
         ctx.arc(
-            enemy.x,
-            enemy.y,
-            enemy.radius,
+            0,
+            0,
+            player.radius,
             0,
             Math.PI*2
         );
@@ -1435,184 +2494,290 @@ function draw(){
         ctx.fill();
 
 
-        ctx.fillStyle="#ffffff";
+        ctx.fillStyle="#182018";
 
         ctx.beginPath();
 
         ctx.arc(
-            enemy.x-6,
-            enemy.y-4,
-            3,
             0,
-            Math.PI*2
-        );
-
-        ctx.arc(
-            enemy.x+6,
-            enemy.y-4,
-            3,
+            0,
+            7,
             0,
             Math.PI*2
         );
 
         ctx.fill();
 
-    });
+
+        ctx.restore();
+
+    }
 
 
     /* PARTÍCULAS */
 
     particles.forEach(
-    p=>{
+        p=>{
 
-        ctx.globalAlpha=
-        p.life/25;
+            ctx.globalAlpha=
+                p.life/25;
 
-        ctx.fillStyle="#ffd166";
+            ctx.fillStyle="#ffd166";
 
-        ctx.beginPath();
+            ctx.beginPath();
 
-        ctx.arc(
-            p.x,
-            p.y,
-            3,
-            0,
-            Math.PI*2
-        );
+            ctx.arc(
+                p.x,
+                p.y,
+                3,
+                0,
+                Math.PI*2
+            );
 
-        ctx.fill();
+            ctx.fill();
 
-    });
+        }
+    );
 
 
     ctx.globalAlpha=1;
 
+    ctx.restore();
+
+
+    drawMinimap();
+
 }
 
 
-/* =========================
-   SPAWN
-========================= */
+/* =================================================
+   MINIMAPA
+================================================= */
 
-let spawnTimer=0;
+function drawMinimap(){
 
-function spawnSystem(){
-
-    if(!playing)return;
-
-    spawnTimer--;
-
-    if(spawnTimer<=0){
-
-        spawnEnemy();
-
-        spawnTimer=
-        Math.max(
-            20,
-            70-score/100
+    const map=
+        document.getElementById(
+            "minimap"
         );
 
-    }
+
+    map.innerHTML="";
+
+
+    const dot=
+        document.createElement(
+            "div"
+        );
+
+
+    dot.style.position=
+        "absolute";
+
+    dot.style.width="8px";
+
+    dot.style.height="8px";
+
+    dot.style.background="white";
+
+    dot.style.borderRadius="50%";
+
+
+    dot.style.left=
+        (
+            player.x/
+            MAP_WIDTH*
+            150
+        )+"px";
+
+
+    dot.style.top=
+        (
+            player.y/
+            MAP_HEIGHT*
+            150
+        )+"px";
+
+
+    map.appendChild(dot);
 
 }
 
 
-/* =========================
+/* =================================================
    HUD
-========================= */
+================================================= */
 
 function updateHUD(){
 
-    document.getElementById(
-        "score"
-    ).textContent=score;
-
-
-    document.getElementById(
-        "ammo"
-    ).textContent=ammo;
+    if(!player)return;
 
 
     document.getElementById(
         "healthText"
     ).textContent=
-    Math.max(
-        0,
-        Math.floor(health)
-    );
-
-
-    let maxHealth=
-    characters[
-        selectedCharacter
-    ].health;
+        Math.max(
+            0,
+            Math.floor(
+                player.health
+            )
+        );
 
 
     document.getElementById(
-        "healthFill"
+        "armorText"
+    ).textContent=
+        Math.max(
+            0,
+            Math.floor(
+                player.armor
+            )
+        );
+
+
+    document.getElementById(
+        "hpBar"
     ).style.width=
-    (
-        health/maxHealth*100
-    )+"%";
+        (
+            player.health/
+            player.maxHealth*
+            100
+        )+"%";
+
+
+    document.getElementById(
+        "armorBar"
+    ).style.width=
+        (
+            player.armor/
+            player.maxArmor*
+            100
+        )+"%";
+
+
+    document.getElementById(
+        "ammo"
+    ).textContent=
+        weapon.ammo;
+
+
+    document.getElementById(
+        "reserve"
+    ).textContent=
+        weapon.reserve;
+
+
+    document.getElementById(
+        "weaponName"
+    ).textContent=
+        weapon.name;
+
+
+    document.getElementById(
+        "playersLeft"
+    ).textContent=
+        enemies.length+1;
 
 }
 
 
-/* =========================
-   GAME OVER
-========================= */
+/* =================================================
+   FIM DE JOGO
+================================================= */
 
 function endGame(){
 
+    if(!playing)return;
+
     playing=false;
+
 
     document.getElementById(
         "finalScore"
-    ).textContent=score;
+    ).textContent=
+        Math.floor(
+            Math.random()*4000+500
+        );
+
 
     document.getElementById(
         "gameOver"
-    ).style.display="flex";
+    ).style.display=
+        "flex";
 
 }
 
 
-/* =========================
+/* =================================================
+   VITÓRIA
+================================================= */
+
+function winGame(){
+
+    if(!playing)return;
+
+    playing=false;
+
+
+    document.getElementById(
+        "finalScore"
+    ).textContent=
+        "VITÓRIA!";
+
+
+    document.getElementById(
+        "gameOver"
+    ).querySelector(
+        ".subtitle"
+    ).textContent=
+        "Você foi o último sobrevivente!";
+
+
+    document.getElementById(
+        "gameOver"
+    ).style.display=
+        "flex";
+
+}
+
+
+/* =================================================
    VOLTAR AO MENU
-========================= */
+================================================= */
 
 function backToMenu(){
 
     document.getElementById(
         "gameOver"
-    ).style.display="none";
+    ).style.display=
+        "none";
+
 
     document.getElementById(
-        "menu"
-    ).style.display="flex";
+        "characterScreen"
+    ).style.display=
+        "flex";
 
 }
 
 
-/* =========================
+/* =================================================
    LOOP
-========================= */
+================================================= */
 
-function loop(){
+function gameLoop(){
 
     update();
-
-    spawnSystem();
 
     draw();
 
     requestAnimationFrame(
-        loop
+        gameLoop
     );
 
 }
 
-loop();
+gameLoop();
 
 </script>
 
